@@ -1,0 +1,17 @@
+{
+  "port": 3222,
+  "nodes": [
+    {
+      "host": "electrum.festivaldelhumor.org",
+      "port": 50002
+    },
+    {
+      "host": "electrum.hsmiths.com",
+      "port": 50002
+    },
+    {
+      "host": "electrum.qtornado.com",
+      "port": 50002
+    }
+  ]
+}
