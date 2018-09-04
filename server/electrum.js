@@ -6,16 +6,15 @@ class Electrum {
     return this.run(ecl => ecl.server_version());
   }
 
-  async getUnspent(address) {
-    const unspent = await this.run(ecl => ecl.blockchainAddress_listunspent(address));
-    return Promise.all(unspent.map(async i => ({ ...i, rawtx: await this.getTx(i.tx_hash)})));
+  async getUnspent(scriptHash) {
+    const unspent = await this.run(ecl => ecl.blockchainScripthash_listunspent(scriptHash));
+
+    return Promise.all(unspent.map(i => this.getTx(i.tx_hash).then(rawtx => ({ ...i, rawtx }))));
   }
 
   getTx(txhash) {
     return this.run(ecl => ecl.blockchainTransaction_get(txhash));
   }
-
-
 
   getRandomServer() {
     return config.nodes[Math.floor(Math.random() * config.nodes.length)];

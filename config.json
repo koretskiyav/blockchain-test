@@ -6,7 +6,7 @@
       "port": 50002
     },
     {
-      "host": "electrum.hsmiths.com",
+      "host":"bitcoin-node.org",
       "port": 50002
     },
     {

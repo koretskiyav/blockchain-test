@@ -31,30 +31,39 @@ module.exports.getPublicKey = privKey =>
     .toPublic()
     .toBase58(NETWORK);
 
+module.exports.getScriptHash = address => {
+  const script = Output.fromScript(address, 10000).script.toRaw();
+
+  const hash = crypto.createHash('sha256').update(script, 'utf8').digest();
+  return reverse(hash).toString('hex');
+};
+
 module.exports.getAddress = (pubKeys, index) => {
   const keys = pubKeys.map(key =>
     PublicKey
       .fromBase58(key, NETWORK)
       .derive(index)
-      .toPublic().publicKey,
+      .publicKey,
   );
 
-  const oldAddress = Script
-    .fromMultisig(2, keys.length, keys)
-    .getAddress()
-    .toBase58(NETWORK);
+  const multisigScript = Script.fromMultisig(2, keys.length, keys);
+  const oldAddress = multisigScript.getAddress().toBase58(NETWORK);
 
-  const rings = keys.map(key => KeyRing.fromPublic(key));
+  const rings = keys.map(key => {
+    const ring = KeyRing.fromPublic(key);
+    ring.witness = true;
+    return ring;
+  });
 
-  rings.forEach(ring => ring.witness = true);
-
-  rings[0].script = Script.fromMultisig(2, rings.length, rings.map(r => r.publicKey));
+  rings[0].script = multisigScript;
 
   const address = rings[0].getAddress().toString();
+  const nestedAddress = rings[0].getNestedAddress().toString();
 
-  const rawAddress = Output.fromScript(address, 10000).script.toRaw();
-  const script = crypto.createHash('sha256').update(rawAddress, 'utf8').digest();
-  const scriptHash = reverse(script).toString('hex');
-
-  return { index, oldAddress, address, scriptHash };
+  return {
+    index,
+    oldAddress,
+    address,
+    nestedAddress,
+  };
 }

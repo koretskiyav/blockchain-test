@@ -2,13 +2,17 @@ const storage = require('../storage');
 const core = require('../core');
 const electrum = require('../electrum');
 
-async function getInfo(depo) {
-  const unspent = await electrum.getUnspent(depo.oldAddress);
-
-  return unspent.map(i => ({ ...i, ...depo}));
-}
-
 const flat = arr => arr.reduce((acc, val) => acc.concat(val), []);
+
+async function getInfo({index, ...depo}) {
+  const info = await Promise.all(['oldAddress', 'address', 'nestedAddress']
+    .map(k => depo[k])
+    .map(address => electrum.getUnspent(core.getScriptHash(address))
+      .then(arr => arr.map(i => ({ ...i, address, index })))
+  ));
+
+  return flat(info);
+}
 
 module.exports = {
   async list(req, res, next) {
