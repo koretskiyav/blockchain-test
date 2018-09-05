@@ -35,7 +35,7 @@ export default class Depo extends React.Component {
         {depos ? <Inspector data={depos} name="depos" initialExpandedPaths={['depos']} /> : 'loading...'}
         <br />
         <br />
-        <button onClick={this.handleAdd}>generate</button>
+        <button onClick={this.handleAdd}>generate new address</button>
       </div>
     )
   }
