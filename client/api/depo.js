@@ -2,10 +2,10 @@ import Base from './base';
 
 export default class Depo extends Base {
   list() {
-    return this.client.get('/');
+    return this.client.get('');
   }
 
   create() {
-    return this.client.post('/');
+    return this.client.post('');
   }
 }
