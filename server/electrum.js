@@ -1,5 +1,5 @@
 const EClient = require('electrum-client');
-const { nodes } = require('../config');
+const { nodes } = require('./config');
 
 class Electrum {
   getVer() {

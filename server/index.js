@@ -1,5 +1,5 @@
 const app = require('./app');
-const config = require('../config');
+const { port } = require('./config');
 
-app().listen(config.port);
-console.log(`APP STARTING AT PORT ${config.port}`);
+app().listen(port);
+console.log(`APP STARTING AT PORT ${port}`);
