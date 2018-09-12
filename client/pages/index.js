@@ -1,11 +1,17 @@
-import Link from 'next/link'
+import React, { Component } from 'react';
+import Link from 'next/link';
 
-export default () =>
-  <div>
-    <Link href="/depo"><a>Depo</a></Link>
-    <br />
-    <Link href="/unspent"><a>Unspent</a></Link>
-    <br />
-    <br />
-    Home page
-  </div>
+export default class Home extends Component {
+  render() {
+    return (
+      <div>
+        <Link href="/depo">Depo</Link>
+        <br />
+        <Link href="/unspent">Unspent</Link>
+        <br />
+        <br />
+        Home page
+      </div>
+    );
+  }
+}

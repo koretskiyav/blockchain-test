@@ -1,5 +1,5 @@
-const eClient = require('electrum-client');
-const config = require('../config');
+const EClient = require('electrum-client');
+const { nodes } = require('../config');
 
 class Electrum {
   getVer() {
@@ -7,29 +7,29 @@ class Electrum {
   }
 
   async getUnspent(scriptHash) {
-    const unspent = await this.run(ecl => ecl.blockchainScripthash_listunspent(scriptHash));
+    const unspent = await this.run(ecl =>
+      ecl.blockchainScripthash_listunspent(scriptHash),
+    );
 
-    return Promise.all(unspent.map(i => this.getTx(i.tx_hash).then(rawtx => ({ ...i, rawtx }))));
+    return Promise.all(
+      unspent.map(i => this.getTx(i.tx_hash).then(rawtx => ({ ...i, rawtx }))),
+    );
   }
 
   getTx(txhash) {
     return this.run(ecl => ecl.blockchainTransaction_get(txhash));
   }
 
-  getRandomServer() {
-    return config.nodes[Math.floor(Math.random() * config.nodes.length)];
-  }
-
   async open() {
-    const node = this.getRandomServer();
-    const ecl = new eClient(node.port, node.host, 'tls');
+    const node = nodes[Math.floor(Math.random() * nodes.length)];
+    const ecl = new EClient(node.port, node.host, 'tls');
 
     try {
       await ecl.connect();
       return ecl;
     } catch (e) {
       console.log(`cannot connext to ${node.host}: ${e.message}`);
-      return await this.open();
+      return this.open();
     }
   }
 

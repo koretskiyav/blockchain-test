@@ -1,4 +1,5 @@
 node_modules
 .next
 server/storage/*
+server/build
 !server/storage/index.js

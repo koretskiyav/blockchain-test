@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import Inspector from 'react-object-inspector';
 
 import api from '../api';
 
-export default class Depo extends React.Component {
+export default class Depo extends Component {
   state = {
     depos: null,
   };
@@ -18,25 +17,35 @@ export default class Depo extends React.Component {
   handleAdd = async () => {
     const depo = await api.depo.create();
     this.setState(({ depos }) => ({ depos: [...depos, depo] }));
-  }
+  };
 
-  render () {
+  render() {
     const { depos } = this.state;
     return (
       <div>
-        <Link href="/"><a>Home</a></Link>
+        <Link href="/">Home</Link>
         <br />
-        <Link href="/unspent"><a>Unspent</a></Link>
+        <Link href="/unspent">Unspent</Link>
         <br />
         <br />
         Deposits:
         <br />
         <br />
-        {depos ? <Inspector data={depos} name="depos" initialExpandedPaths={['depos']} /> : 'loading...'}
+        {depos ? (
+          <Inspector
+            data={depos}
+            name="depos"
+            initialExpandedPaths={['depos']}
+          />
+        ) : (
+          'loading...'
+        )}
         <br />
         <br />
-        <button onClick={this.handleAdd}>generate new address</button>
+        <button type="button" onClick={this.handleAdd}>
+          generate new address
+        </button>
       </div>
-    )
+    );
   }
 }

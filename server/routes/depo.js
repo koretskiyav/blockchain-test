@@ -4,37 +4,43 @@ const electrum = require('../electrum');
 
 const flat = arr => arr.reduce((acc, val) => acc.concat(val), []);
 
-async function getInfo({index, ...depo}) {
-  const info = await Promise.all(['oldAddress', 'address', 'nestedAddress']
-    .map(k => depo[k])
-    .map(address => electrum.getUnspent(core.getScriptHash(address))
-      .then(arr => arr.map(i => ({ ...i, address, index })))
-  ));
+async function getInfo({ index, ...depo }) {
+  const info = await Promise.all(
+    ['oldAddress', 'address', 'nestedAddress']
+      .map(k => depo[k])
+      .map(address =>
+        electrum
+          .getUnspent(core.getScriptHash(address))
+          .then(arr => arr.map(i => ({ ...i, address, index }))),
+      ),
+  );
 
   return flat(info);
 }
 
 module.exports = {
-  async list(req, res, next) {
+  async list(req, res) {
     const deposits = await storage.deposits.read();
     return res.send({ status: 1, data: deposits });
   },
 
-  async create(req, res, next) {
+  async create(req, res) {
     const deposits = await storage.deposits.read();
 
-    const nextIndex = deposits.length ? deposits[deposits.length - 1].index + 1 : 0;
+    const nextIndex = deposits.length
+      ? deposits[deposits.length - 1].index + 1
+      : 0;
 
     const pubKeys = await storage.pubKeys.read();
-    const address = core.getAddress(pubKeys, nextIndex);
+    const address = core.getBTCAddress(pubKeys, nextIndex);
 
     deposits.push(address);
-    await storage.deposits.write(deposits)
+    await storage.deposits.write(deposits);
 
     return res.send({ status: 1, data: address });
   },
 
-  async unspent(req, res, next) {
+  async unspent(req, res) {
     const deposits = await storage.deposits.read();
 
     const list = await Promise.all(deposits.map(getInfo));

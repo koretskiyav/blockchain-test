@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
+    "dev": "cd client && next",
+    "build": "cd client && next build",
+    "start": "cd client && next start",
     "server": "nodemon --watch server server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "cd server && truffle migrate",
+    "eslint": "eslint ./pages ./client ./server",
+    "test": "npm run eslint"
   },
   "author": "",
   "license": "ISC",
@@ -21,13 +23,26 @@
     "connect-multiparty": "^2.1.1",
     "cors": "^2.8.4",
     "electrum-client": "0.0.6",
+    "ethereumjs-util": "^5.2.0",
     "express": "^4.16.3",
-    "next": "^6.1.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-object-inspector": "^0.2.1"
+    "keccak": "^1.4.0",
+    "next": "^6.1.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-object-inspector": "^0.2.1",
+    "truffle": "^4.1.14",
+    "web3": "^1.0.0-beta.36"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.2"
   }
 }

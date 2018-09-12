@@ -8,7 +8,7 @@ module.exports = async function init(storage, core) {
   }
 
   if (!pubKeys.length) {
-    pubKeys = privKeys.map(({ privKey }) => core.getPublicKey(privKey));
+    pubKeys = privKeys.map(({ privKey }) => core.getBTCPublicKey(privKey));
     await storage.pubKeys.write(pubKeys);
   }
-}
+};

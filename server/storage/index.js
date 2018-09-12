@@ -12,7 +12,7 @@ const storage = name => {
     read: async () => {
       try {
         return JSON.parse(await readFile(pathName));
-      } catch(e) {
+      } catch (e) {
         return [];
       }
     },
