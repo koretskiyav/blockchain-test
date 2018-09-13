@@ -16,6 +16,13 @@ const storage = name => {
         return [];
       }
     },
+    readSync: () => {
+      try {
+        return JSON.parse(fs.readFileSync(pathName));
+      } catch (e) {
+        return [];
+      }
+    },
     write: data => writeFile(pathName, JSON.stringify(data, null, 2)),
   };
 };
