@@ -31,4 +31,5 @@ module.exports = {
   privKeys: storage('privKeys'),
   pubKeys: storage('pubKeys'),
   deposits: storage('deposits'),
+  forwarders: storage('forwarders'),
 };

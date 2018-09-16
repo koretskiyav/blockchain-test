@@ -2,7 +2,7 @@
 const core = require('../core');
 const storage = require('../storage');
 
-const WalletSimple = artifacts.require('WalletSimple');
+const WalletSimple = artifacts.require('WalletSimple.sol');
 
 module.exports = deployer => {
   const privKeys = storage.privKeys.readSync();
